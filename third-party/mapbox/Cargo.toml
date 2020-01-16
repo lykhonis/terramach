@@ -1,0 +1,14 @@
+[package]
+name = "mapbox"
+version = "0.1.0"
+authors = ["Volodymyr Lykhonis <vladimirlichonos@gmail.com>"]
+edition = "2018"
+build = "build.rs"
+links = "mapbox"
+include = ["Cargo.toml", "build.rs", "build_support.rs", "build_support/**/*.rs", "src/**/*.h", "src/**/*.cpp", "src/lib.rs"]
+
+[dependencies]
+
+[build-dependencies]
+cc = "1.0.50"
+bindgen = "0.53.2"

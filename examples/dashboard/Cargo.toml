@@ -1,0 +1,18 @@
+[package]
+name = "dashboard"
+version = "0.1.0"
+authors = ["Volodymyr Lykhonis <vladimirlichonos@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+config = "0.10.1"
+lazy_static = "1.4.0"
+glfw = "0.34.0"
+
+[dependencies.terramach]
+path = "../../terramach"
+
+[dependencies.mapbox]
+path = "../../third-party/mapbox"
+
+[package.metadata]

@@ -1,0 +1,35 @@
+version: 2.1
+jobs:
+  build:
+    docker:
+      - image: circleci/rust:stretch
+    steps:
+      - run:
+          name: Install CMAKE
+          command: 'sudo apt-get update && sudo apt-get install -y cmake libxrandr-dev libxinerama-dev'
+      - checkout
+      - run:
+          name: Dashboard
+          command: cd examples/dashboard
+      - run:
+          name: Version information
+          command: rustc --version; cargo --version; rustup --version
+      - run:
+          name: Calculate dependencies
+          command: cargo generate-lockfile
+      - restore_cache:
+          keys:
+            - v4-cargo-cache-{{ arch }}-{{ checksum "Cargo.lock" }}
+      - run:
+          name: Build Dashboard
+          command: cargo build --all --all-targets
+      - save_cache:
+          paths:
+            - /usr/local/cargo/registry
+            - target/debug/.fingerprint
+            - target/debug/build
+            - target/debug/deps
+          key: v4-cargo-cache-{{ arch }}-{{ checksum "Cargo.lock" }}
+      - run:
+          name: Run tests
+          command: cargo test --all

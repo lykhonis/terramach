@@ -1,0 +1,16 @@
+[package]
+name = "terramach-graphics"
+version = "0.1.0"
+authors = ["Volodymyr Lykhonis <vladimirlichonos@gmail.com>"]
+edition = "2018"
+build = "build.rs"
+
+[build-dependencies]
+gl_generator = "0.14.0"
+
+[dependencies.skia-safe]
+version = "0.27.1"
+features = ["gl", "textlayout"]
+
+[target.'cfg(target_os = "macos")'.dependencies]
+cgl = "0.3.2"
