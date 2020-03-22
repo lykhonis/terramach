@@ -404,7 +404,7 @@ impl RenderTree {
         let mut results = HashMap::new();
         self.layout_widget(
             self.root_widget,
-            Constraints::new(None, size.into()),
+            Constraints::new_tight(size.into()),
             &mut results,
         );
 

@@ -255,19 +255,38 @@ impl Widget for DefaultTextStyle {
 
 #[derive(Clone, PartialEq, PartialWidget)]
 pub struct Text {
-    data: String,
+    text: String,
     text_style: Option<TextStyle>,
 }
 
 impl Text {
-    pub fn new(
-        data: impl AsRef<str>,
+    pub fn new<T: AsRef<str>>(
+        text: impl Into<Option<T>>,
         text_style: impl Into<Option<TextStyle>>,
     ) -> Self {
         Text {
-            data: data.as_ref().to_string(),
+            text: text.into().map(|s| s.as_ref().to_string()).unwrap_or_default(),
             text_style: text_style.into(),
         }
+    }
+
+    pub fn new_empty() -> Self {
+        Text {
+            text: String::default(),
+            text_style: None,
+        }
+    }
+
+    pub fn new_text<T: AsRef<str>>(text: impl Into<Option<T>>) -> Self {
+        Text::new(
+            text,
+            None,
+        )
+    }
+
+    pub fn with_text_style(mut self, text_style: TextStyle) -> Self {
+        self.text_style = Some(text_style);
+        self
     }
 
     fn make_font_collection(&self) -> FontCollection {
@@ -305,7 +324,7 @@ impl Widget for Text {
         let mut paragraph_style = ParagraphStyle::new();
         paragraph_style.set_text_align(TextAlign::Start);
 
-        context.set_state(TextState::new(&self.data, paragraph_style, self.make_text_style(&text_style)));
+        context.set_state(TextState::new(&self.text, paragraph_style, self.make_text_style(&text_style)));
     }
 
     fn update(&self, context: &mut WidgetContext, update: &mut UpdateContext) {
@@ -315,7 +334,7 @@ impl Widget for Text {
         }
 
         let state = context.state_mut::<TextState>().unwrap();
-        state.data = self.data.clone();
+        state.data = self.text.clone();
         state.gr_text_style = self.make_text_style(&text_style);
     }
 

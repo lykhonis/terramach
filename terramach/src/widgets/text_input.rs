@@ -48,34 +48,36 @@ impl TextInput {
     const CARET_BLINK_FADE: Duration = Duration::from_millis(275);
     const CARET_MOVE: Duration = Duration::from_millis(100);
 
-    pub fn new<'a>(
-        text: impl Into<Option<&'a str>>,
+    pub fn new<T: AsRef<str>, H: AsRef<str>>(
+        text: impl Into<Option<T>>,
         text_style: impl Into<Option<TextStyle>>,
         text_align: impl Into<Option<TextAlign>>,
-        hint: impl Into<Option<&'a str>>,
+        hint: impl Into<Option<H>>,
         max_lines: impl Into<Option<usize>>,
     ) -> Self {
         TextInput {
-            text: text.into().map(String::from).unwrap_or_default(),
+            text: text.into().map(|s| s.as_ref().to_string()).unwrap_or_default(),
             text_style: text_style.into(),
             text_align: text_align.into().unwrap_or(TextAlign::Start),
-            hint: hint.into().map(String::from),
+            hint: hint.into().map(|s| s.as_ref().to_string()),
             max_lines: max_lines.into().unwrap_or(1),
         }
     }
 
     pub fn new_empty() -> Self {
-        TextInput::new_text(None)
+        TextInput {
+            text: String::default(),
+            text_style: None,
+            text_align: TextAlign::Start,
+            hint: None,
+            max_lines: 1,
+        }
     }
 
-    pub fn new_text<'a>(text: impl Into<Option<&'a str>>) -> Self {
-        TextInput::new(
-            text,
-            None,
-            None,
-            None,
-            None,
-        )
+    pub fn new_text<T: AsRef<str>>(text: impl Into<Option<T>>) -> Self {
+        let mut input = TextInput::new_empty();
+        input.text = text.into().map(|s| s.as_ref().to_string()).unwrap_or_default();
+        input
     }
 
     pub fn with_hint(mut self, hint: impl AsRef<str>) -> Self {

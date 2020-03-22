@@ -58,6 +58,75 @@ access-token = "ACCESS_TOKEN_GOES_HERE"
 cache-path = "/tmp/mapbox.cache.db"
 ```
 
+## Build a Widget
+
+TerraMach GUI is a composition of widgets and/or direct painting. For example, a Decoration widget
+paints background color but also manages its child widget.
+
+A simple example of a counter app. On a tap, the counter is increased and UI is updated to reflect the change.
+
+1. Define a widget and its state (state is optional)
+```rust
+#[derive(Default, Clone, PartialEq, PartialWidget)]
+struct Counter {}
+
+#[derive(Default)]
+struct CounterState {
+    counter: usize,
+}
+```
+
+2. Implement a counter widget
+```rust
+impl Widget for Counter {
+    // prepare state for the counter
+    fn mount(&self, context: &mut WidgetContext, mount: &mut MountContext) {
+        context.set_state(CounterState::default());
+    }
+    
+    // build a counter widget with tap gesture and white background
+    fn build(&self, context: &mut WidgetContext, build: &mut BuildContext) {
+        let state = context.state::<CounterState>().unwrap();
+        build.add_child(
+            Gesture::new(
+                0,
+                build.event_emitter(),
+                TapGesture::default(),
+                None,
+                Decoration::new(
+                    Color::WHITE,
+                    None,
+                    Align::new(
+                        Alignment::center(),
+                        Text::new_text(format!("Counter {}", state.counter).as_str()),
+                    ),
+                ),
+            ),
+        );
+    }
+    
+    // handle a single tap
+    fn event(&self, context: &mut WidgetContext, event: &mut EventContext) {
+        if let Event::Tap(_) = event.get() {
+            let state = context.state_mut::<CounterState>().unwrap();
+            state.counter += 1;
+            event.mark_need_build();
+        }
+    }
+}
+```
+
+3. Start a simple app
+```rust
+let app = App::new(
+    run_loop,
+    events,
+    display,
+    Counter::default(),
+);
+app.run();
+```
+
 ## Supported Platforms
 
 | Platform | Status      |
