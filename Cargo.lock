@@ -245,7 +245,6 @@ name = "dashboard"
 version = "0.1.0"
 dependencies = [
  "config",
- "glfw",
  "lazy_static",
  "mapbox",
  "terramach",
@@ -704,12 +703,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "seahash"
-version = "3.0.6"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "18d6061ff4917fac173fa07b839c8c3f805c0bf3801c52499cc85cdbad8c28df"
-
-[[package]]
 name = "semver"
 version = "0.9.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -867,11 +860,11 @@ dependencies = [
  "core-graphics",
  "display-link",
  "flagset",
+ "glfw",
  "lazy_static",
  "objc",
  "objc-foundation",
  "objc_id",
- "seahash",
  "terramach-graphics",
  "terramach-support",
  "time-point",

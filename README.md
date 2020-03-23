@@ -1,6 +1,8 @@
 # Terra Mach
 
 Terra Mach is a frontend system to build performant graphical interfaces for desktop, embedded, and mobile systems.
+It aims to make it easy to create a branded user experience. It does not obey a platform's look and feel,
+though it provides tools to create similar experiences.
 
 The project is in active development. Most of the APIs are stable, though some breaking changes are still possible.
 
@@ -116,18 +118,18 @@ impl Widget for Counter {
 }
 ```
 
-3. Start a simple app
+3. Start the app
 ```rust
-let app = App::new(
-    run_loop,
-    events,
-    display,
-    Counter::default(),
-);
-app.run();
+fn main() {
+    App::new((1020, 640))
+        .with_title("Counter")
+        .run(Counter::default());
+}
 ```
 
 ## Supported Platforms
+
+In order:
 
 | Platform | Status      |
 | -------- | ----------- |
@@ -135,8 +137,8 @@ app.run();
 | Android  | Planned     |
 | Linux    | Planned     |
 | Windows  | Planned     |
+| iOS      | Planned     |
 | Web      | Considered  |
-| iOS      | Not planned |
 
 # License
 

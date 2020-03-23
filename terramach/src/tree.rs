@@ -24,14 +24,13 @@ use std::time::Duration;
 use std::any::Any;
 use std::iter::FromIterator;
 
-use time_point::TimePoint;
-
 use crate::*;
+use crate::gpu::{Frame, SharedPipeline, RenderTexture, TextureId};
+use crate::platform::Cursor;
 
 use terramach_graphics::{Point, Size};
 
-use crate::gpu::{Frame, SharedPipeline, RenderTexture, TextureId};
-use crate::platform::Cursor;
+use time_point::TimePoint;
 
 pub struct RenderTree {
     tree: Tree<BoxedWidget>,

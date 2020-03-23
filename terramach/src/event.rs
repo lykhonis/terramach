@@ -19,11 +19,11 @@
 use std::collections::VecDeque;
 use std::sync::{Arc, Mutex};
 
-use time_point::TimePoint;
+use crate::{Id, Touch, Touches, HitKey};
 
 use terramach_graphics::{Point, Size};
 
-use crate::{Id, Touch, Touches, HitKey};
+use time_point::TimePoint;
 
 pub type EventId = u8;
 

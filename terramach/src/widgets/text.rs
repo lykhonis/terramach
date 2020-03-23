@@ -370,9 +370,6 @@ struct TextState {
     paragraph_style: ParagraphStyle,
     gr_text_style: GrTextStyle,
     paragraph: Option<Paragraph>,
-    caret_opacity: Option<Animation<f32>>,
-    focused: bool,
-    caret_active: bool,
 }
 
 impl TextState {
@@ -386,19 +383,10 @@ impl TextState {
             paragraph_style,
             gr_text_style,
             paragraph: None,
-            caret_opacity: None,
-            caret_active: false,
-            focused: false,
         }
     }
 
     pub fn data(&self) -> &str {
         self.data.as_str()
-    }
-
-    pub fn caret_opacity(&self) -> f32 {
-        self.caret_opacity.as_ref()
-            .map(|a| a.value())
-            .unwrap_or(if self.caret_active { 1.0 } else { 0.0 })
     }
 }

@@ -4,17 +4,18 @@ version = "0.1.0"
 authors = ["Volodymyr Lykhonis <vladimirlichonos@gmail.com>"]
 edition = "2018"
 
-[dependencies.terramach-graphics]
-path = "graphics"
-
-[dependencies.terramach-support]
-path = "support"
+[features]
+default = []
 
 [dependencies]
-seahash = "3.0.6"
+terramach-support = { path = "support" }
+terramach-graphics = { path = "graphics" }
+flagset = "0.3.0"
 time-point = "0.1.1"
 lazy_static = "1.4.0"
-flagset = "0.3.0"
+
+[target.'cfg(target_os = "macos")'.dependencies]
+glfw = "0.34.0"
 
 [target.'cfg(any(target_os = "macos", target_os = "ios"))'.dependencies]
 core-foundation = "0.7.0"

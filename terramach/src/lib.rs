@@ -39,11 +39,14 @@ mod tree;
 mod widget;
 pub mod widgets;
 mod keys;
+pub mod platform;
+mod target;
+pub mod gpu;
 
 pub(crate) use common::*;
+pub(crate) use app::*;
 
 pub use animation::*;
-pub use app::*;
 pub use bundle::*;
 pub use event::*;
 pub use gesture::*;
@@ -57,9 +60,7 @@ pub use touch::*;
 pub use tree::*;
 pub use widget::*;
 pub use keys::*;
-
-pub mod gpu;
-pub mod platform;
+pub use target::*;
 
 pub use terramach_graphics as graphics;
 pub use terramach_support::*;

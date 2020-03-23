@@ -18,160 +18,99 @@
 
 use crate::gpu::Pipeline;
 use crate::platform::{DisplayMetrics, RunLoop, SharedRunLoop, VSync, Cursors};
-use crate::{
-    AppEvent, AppEvents, DrawContext, Event, EventResponder, RenderTree, Touches, Widget,
-};
+use crate::{AppEvent, AppEvents, DrawContext, Event, EventResponder, RenderTree, Touches, BoxedWidget};
+
 use terramach_graphics::{Canvas, Display, PictureRecorder, Rect, Size};
 
-pub struct App {
-    state: AppState,
-    run_loop: RunLoop,
-}
-
-impl App {
-    pub fn new<D, W>(
-        run_loop: impl Into<Option<RunLoop>>,
-        events: impl Into<Option<AppEvents>>,
-        display: D,
-        content: W,
-    ) -> Self where D: 'static + Display,
-                    W: 'static + Widget {
-        let run_loop = run_loop.into().unwrap_or_else(|| RunLoop::new());
-        let shared_run_loop = run_loop.share();
-        let vsync = VSync::default();
-        let size = display.size();
-        let pipeline = Pipeline::new(vsync.clone(), display);
-        let tree = RenderTree::new(pipeline.share(), Box::new(content));
-        App {
-            run_loop,
-            state: AppState::new(
-                size,
-                vsync,
-                pipeline,
-                events.into().unwrap_or(AppEvents::new()),
-                shared_run_loop,
-                tree,
-            ),
-        }
-    }
-
-    pub fn run(self) {
-        let mut run_loop = self.run_loop;
-        let mut state = self.state;
-        run_loop.add_observer(move || state.run());
-        run_loop.run();
-    }
-}
-
-struct AppState {
-    size: Size,
-    vsync: VSync,
-    pipeline: Pipeline,
-    events: AppEvents,
-    tree: RenderTree,
-    touches: Touches,
-    responder: Option<EventResponder>,
-    hover_responders: Vec<EventResponder>,
-    display_metrics: DisplayMetrics,
-    run_loop: SharedRunLoop,
-    cursors: Cursors,
-}
-
-impl AppState {
-    fn new(
-        size: Size,
-        vsync: VSync,
-        pipeline: Pipeline,
-        events: AppEvents,
-        run_loop: SharedRunLoop,
-        tree: RenderTree,
-    ) -> Self {
-        AppState {
-            size,
-            vsync,
-            pipeline,
-            events,
-            tree,
-            run_loop,
-            touches: Touches::new(),
-            responder: None,
-            hover_responders: Vec::new(),
-            display_metrics: DisplayMetrics::default(),
-            cursors: Cursors::default(),
-        }
-    }
-
-    fn run(&mut self) {
-        if let Some(events) = self.events.poll() {
+pub(crate) fn run_app<D: 'static + Display>(
+    mut run_loop: RunLoop,
+    mut events: AppEvents,
+    display: D,
+    content: impl Into<BoxedWidget>,
+) {
+    let display = Box::new(display);
+    let content = content.into();
+    let mut app_run_loop = run_loop.share();
+    let mut current_size = display.size();
+    let mut vsync = VSync::default();
+    let mut pipeline = Pipeline::new(vsync.clone(), display);
+    let mut tree = RenderTree::new(pipeline.share(), content);
+    let mut hover_responders: Vec<EventResponder> = Vec::new();
+    let display_metrics = DisplayMetrics::default();
+    let mut current_responder: Option<EventResponder> = None;
+    let mut touches = Touches::new();
+    let mut cursors = Cursors::new();
+    run_loop.add_observer(move || {
+        if let Some(events) = events.poll() {
             let mut issue_touch = false;
             for event in events {
                 match event {
                     AppEvent::Quit => {
-                        self.run_loop.stop();
+                        app_run_loop.stop();
                     }
                     AppEvent::Resize(size) => {
-                        self.size = size;
-                        self.tree.invalidate();
-                        self.pipeline.resize(size);
+                        current_size = size;
+                        tree.invalidate();
+                        pipeline.resize(size);
                     }
                     AppEvent::Scroll(delta) => {
-                        if let Some(responder) = self.hover_responders.last() {
-                            self.tree.emit_event(
+                        if let Some(responder) = hover_responders.last() {
+                            tree.emit_event(
                                 responder.widget(),
-                                Event::Scroll(delta * self.display_metrics.device_pixel_ratio()),
+                                Event::Scroll(delta * display_metrics.device_pixel_ratio()),
                             );
                         }
                     }
                     AppEvent::Focus(focused) => {
-                        if let Some(responder) = &self.responder {
-                            self.tree.emit_event(
+                        if let Some(responder) = &current_responder {
+                            tree.emit_event(
                                 responder.widget(),
                                 Event::Focus(focused),
                             );
                         }
                     }
                     AppEvent::TouchBegin(touch) => {
-                        let new_responder = self.tree.hit_test(None, touch.location());
-                        if let Some(responder) = &self.responder {
+                        let new_responder = tree.hit_test(None, touch.location());
+                        if let Some(responder) = &current_responder {
                             if let Some(new_responder) = new_responder {
                                 if new_responder.widget() != responder.widget() {
-                                    self.tree.emit_event(responder.widget(), Event::ResignedResponder);
-                                    self.tree.emit_event(new_responder.widget(), Event::BecameResponder);
-                                    self.responder = Some(new_responder);
+                                    tree.emit_event(responder.widget(), Event::ResignedResponder);
+                                    tree.emit_event(new_responder.widget(), Event::BecameResponder);
+                                    current_responder = Some(new_responder);
                                 }
                             } else {
-                                self.tree.emit_event(responder.widget(), Event::ResignedResponder);
-                                self.responder = None;
+                                tree.emit_event(responder.widget(), Event::ResignedResponder);
+                                current_responder = None;
                             }
                         } else if let Some(responder) = new_responder {
-                            self.tree.emit_event(responder.widget(), Event::BecameResponder);
-                            self.responder = Some(responder);
+                            tree.emit_event(responder.widget(), Event::BecameResponder);
+                            current_responder = Some(responder);
                         }
 
-                        if let Some(responder) = &self.responder {
-                            self.touches.update(responder.transform_touch(&touch));
+                        if let Some(responder) = &current_responder {
+                            touches.update(responder.transform_touch(&touch));
                             issue_touch = true;
-                            self.tree.emit_event(
+                            tree.emit_event(
                                 responder.widget(),
                                 Event::TouchBegin(responder.transform_touch(&touch)),
                             );
                         }
                     }
                     AppEvent::TouchUpdate(touch) => {
-                        if let Some(responder) = &self.responder {
-                            self.touches.update(responder.transform_touch(&touch));
+                        if let Some(responder) = &current_responder {
+                            touches.update(responder.transform_touch(&touch));
                             issue_touch = true;
-                            self.tree.emit_event(
+                            tree.emit_event(
                                 responder.widget(),
                                 Event::TouchUpdate(responder.transform_touch(&touch)),
                             );
                         }
                     }
                     AppEvent::TouchEnd(touch) => {
-                        if let Some(responder) = &self.responder {
-                            self.touches.remove(touch.id());
+                        if let Some(responder) = &current_responder {
+                            touches.remove(touch.id());
                             issue_touch = true;
-                            self.tree.emit_event(
+                            tree.emit_event(
                                 responder.widget(),
                                 Event::TouchEnd(responder.transform_touch(&touch)),
                             );
@@ -179,86 +118,87 @@ impl AppState {
                     }
                     AppEvent::Hover(location) => {
                         // scan through hover stack from first, if one is not hover, the rest aren't either
-                        for i in 0..self.hover_responders.len() {
-                            let responder = &self.hover_responders[i];
-                            let hit_responder = self.tree.hit_test(
+                        for i in 0..hover_responders.len() {
+                            let responder = &hover_responders[i];
+                            let hit_responder = tree.hit_test(
                                 responder.widget(),
                                 responder.transform_point(location),
                             );
                             if hit_responder.is_none() {
-                                for j in self.hover_responders.len() - 1..=i {
-                                    let responder = &self.hover_responders[j];
+                                for j in hover_responders.len() - 1..=i {
+                                    let responder = &hover_responders[j];
                                     if responder.has_cursor() {
-                                        self.cursors.pop();
+                                        cursors.pop();
                                     }
-                                    self.tree.emit_event(responder.widget(), Event::Leave);
+                                    tree.emit_event(responder.widget(), Event::Leave);
                                 }
-                                self.hover_responders = self.hover_responders.drain(0..i).collect();
+                                hover_responders = hover_responders.drain(0..i).collect();
                                 break;
                             }
                         }
 
                         // check last hover, whether it hits a child, if so add it to the stack, otherwise hit whole tree
-                        if let Some(responder) = self.hover_responders.last() {
-                            let hit_responder = self.tree.hit_test(
+                        if let Some(responder) = hover_responders.last() {
+                            let hit_responder = tree.hit_test(
                                 responder.widget(),
                                 responder.transform_point(location),
                             );
                             if let Some(hit_responder) = hit_responder {
                                 if hit_responder.widget() != responder.widget() {
                                     if let Some(cursor) = hit_responder.cursor() {
-                                        self.cursors.push(cursor);
+                                        cursors.push(cursor);
                                     }
-                                    self.tree.emit_event(hit_responder.widget(), Event::Enter);
-                                    self.hover_responders.push(hit_responder);
+                                    tree.emit_event(hit_responder.widget(), Event::Enter);
+                                    hover_responders.push(hit_responder);
                                 }
                             }
-                        } else if let Some(responder) = self.tree.hit_test(None, location) {
+                        } else if let Some(responder) = tree.hit_test(None, location) {
                             if let Some(cursor) = responder.cursor() {
-                                self.cursors.push(cursor);
+                                cursors.push(cursor);
                             }
-                            self.tree.emit_event(responder.widget(), Event::Enter);
-                            self.hover_responders.push(responder);
+                            tree.emit_event(responder.widget(), Event::Enter);
+                            hover_responders.push(responder);
                         }
 
-                        if let Some(responder) = self.hover_responders.last() {
-                            self.tree.emit_event(
+                        if let Some(responder) = hover_responders.last() {
+                            tree.emit_event(
                                 responder.widget(),
                                 Event::Hover(responder.transform_point(location)),
                             );
                         }
                     }
-                    AppEvent::Frame(timestamp) => self.tree.emit_event(None, Event::Frame(timestamp)),
+                    AppEvent::Frame(timestamp) => tree.emit_event(None, Event::Frame(timestamp)),
                     AppEvent::Key(key) => {
-                        if let Some(responder) = &self.responder {
-                            self.tree.emit_event(responder.widget(), Event::Key(key));
+                        if let Some(responder) = &current_responder {
+                            tree.emit_event(responder.widget(), Event::Key(key));
                         }
                     }
                 }
             }
             if issue_touch {
-                if let Some(responder) = &self.responder {
-                    self.tree.emit_event(
+                if let Some(responder) = &current_responder {
+                    tree.emit_event(
                         responder.widget(),
-                        Event::Touch(self.touches.clone()),
+                        Event::Touch(touches.clone()),
                     );
                 }
             }
         }
 
-        self.tree.render(self.size);
+        tree.render(current_size);
 
-        if let Some(timer_time) = self.tree.request_next_timer_time() {
-            self.run_loop.set_next_wakeup_in(timer_time);
+        if let Some(timer_time) = tree.request_next_timer_time() {
+            app_run_loop.set_next_wakeup_in(timer_time);
         }
 
-        if self.tree.needs_frame() {
-            let mut event_emitter = self.events.emitter();
-            let mut run_loop = self.run_loop.clone();
-            self.vsync.request_frame(move |timestamp| {
+        if tree.needs_frame() {
+            let mut event_emitter = events.emitter();
+            let mut run_loop = app_run_loop.clone();
+            vsync.request_frame(move |timestamp| {
                 event_emitter.emit_event(AppEvent::Frame(timestamp));
                 run_loop.wakeup();
             });
         }
-    }
+    });
+    run_loop.run();
 }

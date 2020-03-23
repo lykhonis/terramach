@@ -22,7 +22,7 @@ use std::ptr::null;
 use crate::gpu::{SharedPipeline, TextureId, TextureContext};
 use crate::platform::DisplayMetrics;
 
-use terramach_graphics::{Size, Image, ISize, Canvas, Point, Display, ColorType, ColorSpace, AlphaType};
+use terramach_graphics::{Size, Image, ISize, Canvas, Point, ColorType, ColorSpace, AlphaType};
 use terramach_graphics::{gpu, gl};
 
 pub struct RenderContext<'a> {

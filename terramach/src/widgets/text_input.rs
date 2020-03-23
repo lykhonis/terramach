@@ -738,7 +738,7 @@ impl TextState {
         }.unwrap();
         let position = self.selection.position();
         let mut new_line = false;
-        let mut index = if position == 0 {
+        let index = if position == 0 {
             position
         } else if self.selection.text().chars().nth(position - 1) == Some('\n') {
             new_line = true;

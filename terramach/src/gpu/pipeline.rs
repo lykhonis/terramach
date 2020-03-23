@@ -39,11 +39,11 @@ pub struct Pipeline {
 }
 
 impl Pipeline {
-    pub fn new<D>(vsync: VSync, display: D) -> Self where D: 'static + Display {
+    pub fn new(vsync: VSync, display: Box<dyn Display>) -> Self {
         let (sender, receiver) = channel();
         let mut render_pipeline = RenderPipeline::new(
             vsync,
-            Box::new(display),
+            display,
             sender.clone(),
             receiver,
         );
@@ -194,7 +194,7 @@ impl RenderPipeline {
 
             if will_draw_frame {
                 if let Some(frame) = &frame {
-                    let mut canvas = surface.canvas();
+                    let canvas = surface.canvas();
                     canvas.clear(0);
                     frame.draw(canvas, self.display.size(), &mut textures);
                     canvas.flush();
