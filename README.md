@@ -11,7 +11,7 @@ It leverages graphics library [Skia](https://skia.org) to enable high performant
 
 # How to Use
 
-Terra Mac create is located in [terramach](/terramach) folder. To use it checkout Terra Mach to your workspace and link 
+Terra Mach crate is located in [terramach](/terramach) folder. To use it checkout Terra Mach to your workspace and link 
 it locally by supplying a path.
 
 ```shell script
@@ -134,7 +134,7 @@ In order:
 | Platform | Status      |
 | -------- | ----------- |
 | Mac OS   | Supported   |
-| Android  | Planned     |
+| Android  | In Progress |
 | Linux    | Planned     |
 | Windows  | Planned     |
 | iOS      | Planned     |
