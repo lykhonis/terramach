@@ -1,8 +1,10 @@
 # Terra Mach
 
-Terra Mach is a frontend system to build performant graphical interfaces for desktop, embedded, and mobile systems.
-It aims to make it easy to create a branded user experience. It does not obey a platform's look and feel,
-though it provides tools to create similar experiences.
+Terra Mach is a mapping frontend system to build graphical interfaces for devices.
+
+This project focuses on experiences around statistical data (graphs, diagrams), mapping, 
+and user input. When it comes to user experience, elements a user interacts with are flexible enough to build 
+most of common experiences. 
 
 The project is in active development. Most of the APIs are stable, though some breaking changes are still possible.
 
