@@ -1,6 +1,6 @@
 /*
  * Terra Mach
- * Copyright [2020] Volodymyr Lykhonis
+ * Copyright [2020] Terra Mach Authors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,14 +16,16 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>
  */
 
-mod counter;
+mod widget;
 
 use terramach::*;
 
-use counter::Counter;
+use widget::Counter;
 
+#[terramach_main]
 fn main() {
-    App::new((1020, 640))
+    App::new()
+        .with_size((380, 540))
         .with_title("Terra Mach - Counter")
         .run(Counter::default());
 }

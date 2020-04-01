@@ -1,6 +1,6 @@
 /*
  * Terra Mach
- * Copyright [2020] Volodymyr Lykhonis
+ * Copyright [2020] Terra Mach Authors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,3 +22,10 @@ mod mac_context;
 
 #[cfg(target_os = "macos")]
 pub use mac_context::*;
+
+#[cfg(target_os = "android")]
+#[path = "android_context.rs"]
+mod android_context;
+
+#[cfg(target_os = "android")]
+pub use android_context::*;

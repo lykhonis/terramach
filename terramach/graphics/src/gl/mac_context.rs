@@ -1,6 +1,6 @@
 /*
  * Terra Mach
- * Copyright [2020] Volodymyr Lykhonis
+ * Copyright [2020] Terra Mach Authors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,11 +21,14 @@ use std::rc::Rc;
 
 use cgl;
 
-struct CGLContext(cgl::CGLContextObj);
+struct CGLContext {
+    context: cgl::CGLContextObj,
+    owner: bool,
+}
 
 impl CGLContext {
     pub unsafe fn native(&self) -> cgl::CGLContextObj {
-        self.0
+        self.context
     }
 }
 
@@ -33,15 +36,17 @@ impl Drop for CGLContext {
     fn drop(&mut self) {
         unsafe {
             cgl::CGLSetCurrentContext(null_mut());
-            let error = cgl::CGLDestroyContext(self.0);
-            debug_assert!(error == 0);
+            if self.owner {
+                let error = cgl::CGLDestroyContext(self.context);
+                debug_assert!(error == 0);
+            }
         }
     }
 }
 
-#[derive(Clone)]
 pub struct Context {
     inner: Rc<CGLContext>,
+    guard: Option<ContextGuard>,
 }
 
 impl Context {
@@ -52,7 +57,11 @@ impl Context {
                 None
             } else {
                 Some(Context {
-                    inner: Rc::new(CGLContext(context)),
+                    inner: Rc::new(CGLContext {
+                        context,
+                        owner: false,
+                    }),
+                    guard: None,
                 })
             }
         }
@@ -67,36 +76,57 @@ impl Context {
             debug_assert!(error == 0);
             debug_assert!(!context.is_null());
             Context {
-                inner: Rc::new(CGLContext(context)),
+                inner: Rc::new(CGLContext {
+                    context,
+                    owner: true,
+                }),
+                guard: None,
             }
         }
     }
 
-    pub fn make_current(&mut self) -> ContextGuard {
+    pub fn lock_current(&mut self) -> ContextGuard {
         ContextGuard::new(self)
+    }
+
+    pub fn make_current(&mut self) {
+        if self.guard.is_none() {
+            self.guard = self.lock_current().into();
+        }
+    }
+
+    pub fn clear_current(&mut self) {
+        self.guard = None;
     }
 }
 
-pub struct ContextGuard<'a> {
-    current: cgl::CGLContextObj,
-    context: &'a mut Context,
+impl Clone for Context {
+    fn clone(&self) -> Self {
+        Context {
+            inner: self.inner.clone(),
+            guard: None,
+        }
+    }
 }
 
-impl<'a> ContextGuard<'a> {
-    fn new(context: &'a mut Context) -> Self {
+pub struct ContextGuard {
+    current: cgl::CGLContextObj,
+}
+
+impl ContextGuard {
+    fn new(context: &Context) -> Self {
         unsafe {
             let current = cgl::CGLGetCurrentContext();
             let error = cgl::CGLSetCurrentContext(context.inner.native());
             debug_assert!(error == 0);
             ContextGuard {
                 current,
-                context,
             }
         }
     }
 }
 
-impl<'a> Drop for ContextGuard<'a> {
+impl Drop for ContextGuard {
     fn drop(&mut self) {
         unsafe {
             let error = cgl::CGLSetCurrentContext(self.current);

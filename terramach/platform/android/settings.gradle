@@ -1,0 +1,3 @@
+rootProject.name='terramach'
+
+include ':ui'

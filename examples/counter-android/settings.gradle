@@ -1,0 +1,4 @@
+rootProject.name='Counter'
+
+include ':app', ':terramach'
+project(":terramach").projectDir = file("../../terramach/platform/android/ui")

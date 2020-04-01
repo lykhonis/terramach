@@ -4,7 +4,7 @@ Terra Mach is a mapping frontend system to build graphical interfaces for device
 
 This project focuses on experiences around statistical data (graphs, diagrams), mapping, 
 and user input. When it comes to user experience, elements a user interacts with are flexible enough to build 
-most of common experiences. 
+most of common experiences.
 
 The project is in active development. Most of the APIs are stable, though some breaking changes are still possible.
 
@@ -136,7 +136,7 @@ In order:
 | Platform | Status      |
 | -------- | ----------- |
 | Mac OS   | Supported   |
-| Android  | In Progress |
+| Android  | Partial     |
 | Linux    | Planned     |
 | Windows  | Planned     |
 | iOS      | Planned     |

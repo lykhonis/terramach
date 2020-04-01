@@ -1,6 +1,6 @@
 /*
  * Terra Mach
- * Copyright [2020] Volodymyr Lykhonis
+ * Copyright [2020] Terra Mach Authors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,14 +19,40 @@
 extern crate proc_macro;
 
 use proc_macro::TokenStream;
+use proc_macro2::{Ident, Span};
+use syn::{parse_macro_input, DeriveInput, AttributeArgs, ItemFn, NestedMeta, Meta, Lit};
 use quote::quote;
-use syn::{parse_macro_input, DeriveInput};
+
+#[proc_macro_attribute]
+pub fn noop_attribute(_: TokenStream, input: TokenStream) -> TokenStream {
+    input
+}
+
+#[proc_macro_attribute]
+pub fn terramach_main(args: TokenStream, input: TokenStream) -> TokenStream {
+    let args = parse_macro_input!(args as AttributeArgs);
+    let input = parse_macro_input!(input as ItemFn);
+    let attrs = &input.attrs;
+    let stmts = &input.block.stmts;
+
+    let expanded = quote! {
+        terramach::export_functions!();
+
+        #(#attrs)*
+        #[no_mangle]
+        pub extern "C" fn terramach_main() {
+            #(#stmts)*
+        }
+    };
+
+    TokenStream::from(expanded)
+}
 
 #[proc_macro_derive(PartialWidget)]
 pub fn derive_partial_widget(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
 
-    let name = input.ident;
+    let name = &input.ident;
     let (impl_generics, ty_generics, where_clause) = input.generics.split_for_impl();
 
     let expanded = quote! {
@@ -57,7 +83,7 @@ pub fn derive_partial_widget(input: TokenStream) -> TokenStream {
 pub fn derive_event_id(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
 
-    let name = input.ident;
+    let name = &input.ident;
     let (impl_generics, ty_generics, where_clause) = input.generics.split_for_impl();
 
     let expanded = quote! {

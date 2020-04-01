@@ -14,3 +14,6 @@ features = ["gl", "textlayout"]
 
 [target.'cfg(target_os = "macos")'.dependencies]
 cgl = "0.3.2"
+
+[target.'cfg(target_os = "android")'.dependencies]
+egl = "0.2.7"

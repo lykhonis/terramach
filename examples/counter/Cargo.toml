@@ -4,5 +4,14 @@ version = "0.1.0"
 authors = ["Volodymyr Lykhonis <vladimirlichonos@gmail.com>"]
 edition = "2018"
 
+[[bin]]
+name = "counter"
+path = "src/main.rs"
+
+[lib]
+name = "counter"
+crate-type = ["cdylib"]
+path = "src/main.rs"
+
 [dependencies]
 terramach = { path = "../../terramach" }

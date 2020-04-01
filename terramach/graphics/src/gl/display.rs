@@ -1,6 +1,6 @@
 /*
  * Terra Mach
- * Copyright [2020] Volodymyr Lykhonis
+ * Copyright [2020] Terra Mach Authors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -46,7 +46,7 @@ impl<T: 'static> Display<T> {
         present_current: gl::Function<T>,
     ) -> Option<Self> {
         gl::load_with(|symbol| (load_function)(&mut info, symbol));
-        let interface = gpu::gl::Interface::new_native();
+        let interface = gpu::gl::Interface::new_load_with(|symbol| load_function(&mut info, symbol));
         let context = gpu::Context::new_gl(interface)?;
         Some(Display {
             size: size.into(),
@@ -77,10 +77,14 @@ impl<T> GrDisplay for Display<T> {
         self.size = size;
     }
 
+    fn pixel_ratio(&self) -> f32 {
+        let view_port = gl::gl_view_port().size();
+        (view_port.width as f32 / self.size.width).min(view_port.height as f32 / self.size.height)
+    }
+
     fn new_surface(&mut self) -> Option<Surface> {
         let view_port = gl::gl_view_port().size();
-        let pixel_ratio = (view_port.width as f32 / self.size.width)
-            .min(view_port.height as f32 / self.size.height);
+        let pixel_ratio = self.pixel_ratio();
         let fboid = self.fbo();
         let (color_type, format) = {
             if self.gpu_context.color_type_supported_as_surface(ColorType::RGBA8888) {
@@ -129,7 +133,7 @@ impl<T> GrDisplay for Display<T> {
         )
     }
 
-    fn clean_current(&mut self) {
+    fn clear_current(&mut self) {
         if let Ok(mut info) = self.info.lock() {
             (self.clear_current)(info.deref_mut());
         }

@@ -1,6 +1,6 @@
 /*
  * Terra Mach
- * Copyright [2020] Volodymyr Lykhonis
+ * Copyright [2020] Terra Mach Authors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,11 +25,13 @@ mod settings;
 use crate::widgets::*;
 
 use terramach::*;
+use terramach::platform::*;
 use terramach::graphics::*;
 use terramach::widgets::*;
 
 fn main() {
-    App::new((1020, 640))
+    App::new()
+        .with_size((1020, 640))
         .with_title("Terra Mach - Dashboard")
         .run(DefaultTextStyle::new(
             TextStyle::default()

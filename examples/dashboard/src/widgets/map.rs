@@ -1,6 +1,6 @@
 /*
  * Terra Mach
- * Copyright [2020] Volodymyr Lykhonis
+ * Copyright [2020] Terra Mach Authors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +21,6 @@ use std::sync::mpsc::{channel, Receiver, Sender};
 use terramach::*;
 use terramach::gpu::*;
 use terramach::graphics::ISize;
-use terramach::platform::DisplayMetrics;
 
 use mapbox;
 
@@ -261,8 +260,6 @@ impl RenderTexture for RenderMap {
         let mut pipeline = preroll.pipeline().clone();
         let mut gl = preroll.gl().clone();
         let view_port = gl.view_port();
-        let display_metrics = DisplayMetrics::default();
-        let pixel_ratio = display_metrics.device_pixel_ratio();
         self.last_size = Some(size);
         self.map = mapbox::Map::new(
             mapbox::RendererFrontend::new(
@@ -273,12 +270,12 @@ impl RenderTexture for RenderMap {
                     || {},
                     || {},
                 ),
-                pixel_ratio,
+                preroll.pixel_ratio(),
                 move || pipeline.invalidate_texture(texture),
             ),
             &mapbox::MapOptions::default()
                 .with_size(mapbox::Size::new(size.width as u32, size.height as u32))
-                .with_pixel_ratio(pixel_ratio),
+                .with_pixel_ratio(preroll.pixel_ratio()),
             &mapbox::ResourceOptions::default()
                 .with_cache_path(Settings::mapbox_cache_path())
                 .with_access_token(Settings::mapbox_access_token()),

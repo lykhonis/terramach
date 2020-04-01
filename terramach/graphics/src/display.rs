@@ -1,6 +1,6 @@
 /*
  * Terra Mach
- * Copyright [2020] Volodymyr Lykhonis
+ * Copyright [2020] Terra Mach Authors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,12 +22,12 @@ use crate::{Size, Surface};
 pub trait Display {
     fn size(&self) -> Size;
     fn resize(&mut self, new_size: Size);
+    fn pixel_ratio(&self) -> f32;
     fn new_surface(&mut self) -> Option<Surface>;
     fn new_offscreen_surface(&mut self, size: Size) -> Option<Surface>;
-    fn clean_current(&mut self);
+    fn clear_current(&mut self);
     fn make_current(&mut self);
     fn present_current(&mut self);
     fn gpu_context(&mut self) -> Option<&mut gpu::Context> { None }
     fn gl(&mut self) -> Option<gl::Gl> { None }
 }
-

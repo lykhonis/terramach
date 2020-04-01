@@ -3,9 +3,16 @@ name = "terramach"
 version = "0.1.0"
 authors = ["Volodymyr Lykhonis <vladimirlichonos@gmail.com>"]
 edition = "2018"
+build = "build/build.rs"
+
+[lib]
+path = "ui/lib.rs"
 
 [features]
 default = []
+
+[build-dependencies]
+bindgen = "0.53.2"
 
 [dependencies]
 terramach-support = { path = "support" }
@@ -24,3 +31,6 @@ display-link = "0.2.0"
 objc = "0.2.7"
 objc_id = "0.1.1"
 objc-foundation = "0.1.1"
+
+[target.'cfg(target_os = "android")'.dependencies]
+jni = "0.16.0"
