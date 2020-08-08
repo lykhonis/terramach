@@ -31,7 +31,7 @@ pub enum Fit {
 
 impl Default for Fit {
     fn default() -> Self {
-        Fit::Contain
+        Self::Contain
     }
 }
 
@@ -135,7 +135,7 @@ impl Constraints {
         minimum_size: impl Into<Option<Size>>,
         maximum_size: impl Into<Option<Size>>,
     ) -> Self {
-        Constraints {
+        Self {
             minimum_size: minimum_size.into().unwrap_or(Size::new_empty()),
             maximum_size: maximum_size.into().unwrap_or(Size::new_unbound()),
         }
@@ -143,7 +143,7 @@ impl Constraints {
 
     pub fn new_tight(size: impl Into<Size>) -> Self {
         let size = size.into();
-        Constraints {
+        Self {
             minimum_size: size,
             maximum_size: size,
         }
@@ -151,7 +151,7 @@ impl Constraints {
 
     pub fn new_loose(size: impl Into<Size>) -> Self {
         let size = size.into();
-        Constraints {
+        Self {
             minimum_size: Size::new_empty(),
             maximum_size: size,
         }
@@ -175,7 +175,7 @@ impl Constraints {
 
 impl From<(Size, Size)> for Constraints {
     fn from(size: (Size, Size)) -> Self {
-        Constraints::new(size.0, size.1)
+        Self::new(size.0, size.1)
     }
 }
 
@@ -196,7 +196,7 @@ impl<'a> LayoutContext<'a> {
     ) -> Self where
         C: Fn(usize) -> Option<Id>,
         L: FnMut(Id, &Constraints) -> Option<Size> {
-        LayoutContext {
+            Self {
             constraints: constraints
                 .into()
                 .unwrap_or(Constraints::new_loose(Size::new_unbound())),

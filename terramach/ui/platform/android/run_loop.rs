@@ -56,13 +56,13 @@ impl Fd {
 
 impl From<i32> for Fd {
     fn from(fd: i32) -> Self {
-        Fd(AtomicI32::new(fd))
+        Self(AtomicI32::new(fd))
     }
 }
 
 impl Clone for Fd {
     fn clone(&self) -> Self {
-        Fd::from(self.handle())
+        Self::from(self.handle())
     }
 }
 

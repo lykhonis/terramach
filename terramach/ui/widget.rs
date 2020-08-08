@@ -111,7 +111,7 @@ pub struct WidgetContext {
 
 impl WidgetContext {
     pub fn new() -> Self {
-        WidgetContext {
+        Self {
             state: None,
             frame_requested: false,
             timers: None,
@@ -317,7 +317,7 @@ pub struct Channel<T> {
 
 impl<T> Channel<T> {
     pub fn new() -> Self {
-        Channel {
+        Self {
             inner: Rc::new(RefCell::new(ChannelInner {
                 active: true,
                 send: None,

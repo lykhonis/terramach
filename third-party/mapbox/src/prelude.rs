@@ -37,7 +37,7 @@ impl Size {
 
 impl From<(u32, u32)> for Size {
     fn from(size: (u32, u32)) -> Self {
-        Size::new(size.0, size.1)
+        Self::new(size.0, size.1)
     }
 }
 
@@ -56,7 +56,7 @@ pub struct ResourceOptions {
 impl ResourceOptions {
     pub fn new() -> Self {
         unsafe {
-            ResourceOptions {
+            Self {
                 handle: Handle::new_native(bindings::mbgl_ResourceOptions_ResourceOptions),
             }
         }
@@ -82,7 +82,7 @@ impl ResourceOptions {
 
 impl Default for ResourceOptions {
     fn default() -> Self {
-        ResourceOptions::new()
+        Self::new()
     }
 }
 
@@ -101,7 +101,7 @@ pub struct LatLng(bindings::mbgl_LatLng);
 
 impl LatLng {
     pub fn new(latitude: f64, longitude: f64) -> Self {
-        LatLng(bindings::mbgl_LatLng {
+        Self(bindings::mbgl_LatLng {
             lat: latitude,
             lon: longitude,
         })
@@ -204,7 +204,7 @@ impl NativeAccess<bindings::mbgl_CameraOptions> for CameraOptions {
 
 impl Default for CameraOptions {
     fn default() -> Self {
-        CameraOptions::new()
+        Self::new()
     }
 }
 
@@ -252,14 +252,14 @@ impl NativeAccess<bindings::mbgl_AnimationOptions> for AnimationOptions {
 
 impl Default for AnimationOptions {
     fn default() -> Self {
-        AnimationOptions::new()
+        Self::new()
     }
 }
 
 impl AnimationOptions {
     pub fn new() -> Self {
         unsafe {
-            AnimationOptions {
+            Self {
                 handle: Handle::from_ptr(bindings::C_AnimationOptions_new()),
             }
         }

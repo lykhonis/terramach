@@ -28,7 +28,7 @@ pub struct Sensor {
 
 impl Sensor {
     pub fn new(level: f32) -> Self {
-        Sensor { level }
+        Self { level }
     }
 }
 
@@ -81,7 +81,7 @@ struct SensorState {
 
 impl SensorState {
     pub fn new() -> Self {
-        SensorState { animation: None }
+        Self { animation: None }
     }
 
     pub fn animation(&self) -> Option<f32> {
@@ -94,7 +94,7 @@ pub struct Sensors {}
 
 impl Sensors {
     pub fn new() -> Self {
-        Sensors {}
+        Self {}
     }
 
     fn build_sensor_data(&self, title: impl AsRef<str>) -> impl Widget {

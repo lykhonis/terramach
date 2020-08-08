@@ -30,7 +30,7 @@ pub struct Touch {
 
 impl Touch {
     pub fn new(id: TouchId, location: impl Into<Point>) -> Self {
-        Touch {
+        Self {
             id,
             location: location.into(),
         }
@@ -52,7 +52,7 @@ pub struct Touches {
 
 impl Touches {
     pub fn new() -> Self {
-        Touches {
+        Self {
             touches: HashMap::new(),
         }
     }
@@ -99,7 +99,7 @@ pub struct TouchTracker {
 
 impl TouchTracker {
     pub fn new() -> Self {
-        TouchTracker {
+        Self {
             touches: HashMap::new(),
             current: None,
             offset: None,

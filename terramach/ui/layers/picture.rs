@@ -31,7 +31,7 @@ unsafe impl Send for PictureLayer {}
 
 impl PictureLayer {
     pub fn new(picture: Picture) -> Self {
-        PictureLayer {
+        Self {
             picture: Arc::new(picture),
         }
     }

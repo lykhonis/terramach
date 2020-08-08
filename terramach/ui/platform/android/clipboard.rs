@@ -33,13 +33,13 @@ impl From<String> for ClipboardContent {
 
 impl From<&str> for ClipboardContent {
     fn from(data: &str) -> Self {
-        ClipboardContent::from(data.to_string())
+        Self::from(data.to_string())
     }
 }
 
 impl From<&String> for ClipboardContent {
     fn from(data: &String) -> Self {
-        ClipboardContent::from(data.clone())
+        Self::from(data.clone())
     }
 }
 
@@ -66,6 +66,6 @@ impl Clipboard {
 
 impl Default for Clipboard {
     fn default() -> Self {
-        Clipboard::new()
+        Self::new()
     }
 }

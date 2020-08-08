@@ -28,7 +28,7 @@ pub struct Timer {
 
 impl Timer {
     pub fn new(delay: impl Into<Option<Duration>>, interval: impl Into<Option<Duration>>) -> Self {
-        Timer {
+        Self {
             delay: delay.into(),
             interval: interval.into(),
         }
@@ -96,7 +96,7 @@ impl ScheduledTimer {
 
 impl From<Timer> for ScheduledTimer {
     fn from(timer: Timer) -> Self {
-        ScheduledTimer {
+        Self {
             timer,
             timestamp: Instant::now(),
             ongoing: false,
@@ -111,7 +111,7 @@ pub struct Timers {
 
 impl Timers {
     pub fn new() -> Self {
-        Timers {
+        Self {
             ids: IndexPool::new(),
             timers: HashMap::new(),
         }

@@ -108,7 +108,7 @@ impl Map {
         if let Some(controller) = controller.into() {
             controller.bind(channel.clone());
         }
-        Map {
+        Self {
             channel,
             camera: camera.clone(),
         }
@@ -209,7 +209,7 @@ impl MapState {
         channel: Channel<MapCommand>,
         sender: Sender<MapCommand>,
     ) -> Self {
-        MapState {
+        Self {
             texture,
             channel,
             sender,
@@ -245,7 +245,7 @@ unsafe impl Send for RenderMap {}
 
 impl RenderMap {
     pub fn new(receiver: Receiver<MapCommand>) -> Self {
-        RenderMap {
+        Self {
             receiver,
             map: None,
             last_size: None,

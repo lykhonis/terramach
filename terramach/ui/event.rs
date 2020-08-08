@@ -59,7 +59,7 @@ pub struct EventContext {
 
 impl EventContext {
     pub fn new(event: Event) -> Self {
-        EventContext {
+        Self {
             need_layout: false,
             need_paint: false,
             need_build: false,
@@ -122,7 +122,7 @@ pub type AppEvents = Events<AppEvent>;
 
 impl Default for AppEvents {
     fn default() -> Self {
-        AppEvents::new()
+        Self::new()
     }
 }
 
@@ -135,7 +135,7 @@ pub struct Events<T> {
 
 impl<T> Events<T> {
     pub fn new() -> Self {
-        Events {
+        Self {
             queue: Default::default(),
         }
     }

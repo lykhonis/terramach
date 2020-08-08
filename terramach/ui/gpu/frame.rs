@@ -27,7 +27,7 @@ pub struct Frame {
 
 impl Frame {
     pub fn new(layers: &LayerTree) -> Self {
-        Frame {
+        Self {
             layers: layers.clone(),
         }
     }

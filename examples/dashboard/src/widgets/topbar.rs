@@ -41,7 +41,7 @@ impl Tab {
         title: impl AsRef<str>,
         selected: bool,
     ) -> Self {
-        Tab {
+        Self {
             title: title.as_ref().to_string(),
             selected,
         }
@@ -151,7 +151,7 @@ struct TabState {
 
 impl TabState {
     pub fn new(selected: bool) -> Self {
-        TabState {
+        Self {
             animation: None,
             selected,
         }
@@ -167,7 +167,7 @@ pub struct Topbar {}
 
 impl Topbar {
     pub fn new() -> Self {
-        Topbar {}
+        Self {}
     }
 
     fn build_tab(
@@ -273,7 +273,7 @@ struct TopbarState {
 
 impl TopbarState {
     pub fn new() -> Self {
-        TopbarState {
+        Self {
             selected_button: Button::RealTime,
         }
     }

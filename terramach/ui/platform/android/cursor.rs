@@ -24,7 +24,7 @@ pub enum Cursor {
 
 impl Default for Cursor {
     fn default() -> Self {
-        Cursor::Arrow
+        Self::Arrow
     }
 }
 
@@ -33,7 +33,7 @@ pub struct Cursors {}
 
 impl Cursors {
     pub fn new() -> Self {
-        Cursors {}
+        Self {}
     }
 
     pub fn push(&mut self, cursor: impl Into<Option<Cursor>>) {

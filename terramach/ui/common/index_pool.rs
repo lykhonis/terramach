@@ -24,7 +24,7 @@ pub struct IndexPool {
 
 impl IndexPool {
     pub fn new() -> Self {
-        IndexPool {
+        Self {
             current_index: 0,
             free_indexes: Vec::new(),
         }

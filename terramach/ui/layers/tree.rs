@@ -37,7 +37,7 @@ impl LayerKey {
         layers: impl Into<Option<Vec<Id>>>,
         leaf_layers: impl Into<Option<Vec<Id>>>,
     ) -> Self {
-        LayerKey {
+        Self {
             size: size.into(),
             layers: layers.into().unwrap_or_default(),
             leaf_layers: leaf_layers.into().unwrap_or_default(),
@@ -54,7 +54,7 @@ pub struct LayerTree {
 
 impl LayerTree {
     pub fn new() -> Self {
-        LayerTree {
+        Self {
             tree: Tree::new(),
             keys: HashMap::new(),
             layer_key: HashMap::new(),

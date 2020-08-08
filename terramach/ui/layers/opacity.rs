@@ -27,7 +27,7 @@ pub struct OpacityLayer {
 
 impl OpacityLayer {
     pub fn new(opacity: impl Into<f32>) -> Self {
-        OpacityLayer {
+        Self {
             opacity: opacity.into(),
         }
     }
