@@ -71,7 +71,7 @@ impl Context {
 
     pub fn new_shared(&mut self) -> Self {
         let config = egl::android_choose_config(self.inner.display);
-        Context {
+        Self {
             inner: Rc::new(EGLContext {
                 owner: true,
                 context: egl::android_new_context(self.inner.display, config),
@@ -100,7 +100,7 @@ impl Context {
 
 impl Clone for Context {
     fn clone(&self) -> Self {
-        Context {
+        Self {
             inner: self.inner.clone(),
             guard: None,
         }
@@ -126,7 +126,7 @@ impl ContextGuard {
             context.inner.context,
         );
         debug_assert!(result);
-        ContextGuard {
+        Self {
             current_context,
             current_read_surface,
             current_draw_surface,

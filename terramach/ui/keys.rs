@@ -35,7 +35,7 @@ pub struct KeyModifiers(FlagSet<KeyModifier>);
 
 impl KeyModifiers {
     pub fn new(modifiers: impl Into<FlagSet<KeyModifier>>) -> Self {
-        KeyModifiers(modifiers.into())
+        Self(modifiers.into())
     }
 
     pub fn clear_all(&mut self) {
@@ -217,7 +217,7 @@ impl HitKey {
         action: KeyAction,
         modifiers: KeyModifiers,
     ) -> Self {
-        HitKey {
+        Self {
             character: character.into(),
             key: Key::from(scan_code),
             scan_code,
@@ -260,7 +260,7 @@ pub struct KeyTracker {
 
 impl KeyTracker {
     pub fn new() -> Self {
-        KeyTracker {
+        Self {
             modifiers: KeyModifiers::default(),
             scan_code: None,
             keys: HashMap::new(),

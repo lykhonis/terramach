@@ -56,13 +56,13 @@ impl Fd {
 
 impl From<i32> for Fd {
     fn from(fd: i32) -> Self {
-        Fd(AtomicI32::new(fd))
+        Self(AtomicI32::new(fd))
     }
 }
 
 impl Clone for Fd {
     fn clone(&self) -> Self {
-        Fd::from(self.handle())
+        Self::from(self.handle())
     }
 }
 
@@ -106,7 +106,7 @@ impl RunLoopTimer {
                 &new_value,
                 null_mut(),
             ), -1, "Failed to arm a timer");
-            RunLoopTimer {
+            Self {
                 fd: Rc::new(Fd::from(fd)),
             }
         }
@@ -150,7 +150,7 @@ impl SharedRunLoop {
         unsafe {
             bindings::ALooper_acquire(run_loop.inner);
         }
-        SharedRunLoop {
+        Self {
             looper: run_loop.inner,
             running: run_loop.running.clone(),
             timer: run_loop.timer.clone(),
@@ -178,7 +178,7 @@ impl Clone for SharedRunLoop {
         unsafe {
             bindings::ALooper_acquire(self.looper);
         }
-        SharedRunLoop {
+        Self {
             looper: self.looper,
             running: self.running.clone(),
             timer: self.timer.clone(),
@@ -209,7 +209,7 @@ impl RunLoop {
         unsafe {
             let looper = bindings::ALooper_forThread();
             assert!(!looper.is_null(), "Looper is not available on current thread");
-            RunLoop::from_looper(looper)
+            Self::from_looper(looper)
         }
     }
 
@@ -217,7 +217,7 @@ impl RunLoop {
         unsafe {
             let looper = bindings::ALooper_prepare(bindings::ALOOPER_PREPARE_ALLOW_NON_CALLBACKS as c_int);
             assert!(!looper.is_null(), "Failed to prepare a looper on current thread");
-            RunLoop::from_looper(looper)
+            Self::from_looper(looper)
         }
     }
 
@@ -236,7 +236,7 @@ impl RunLoop {
                 ),
                 -1, "Failed to add a timer",
             );
-            RunLoop {
+            Self {
                 inner: looper,
                 running: Rc::new(AtomicBool::new(false)),
                 last_handle: RunLoopHandle::default(),

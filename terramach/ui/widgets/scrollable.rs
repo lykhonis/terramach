@@ -34,7 +34,7 @@ pub enum ScrollDirection {
 
 impl Default for ScrollDirection {
     fn default() -> Self {
-        ScrollDirection::Vertical
+        Self::Vertical
     }
 }
 
@@ -54,7 +54,7 @@ impl Scrollable {
     const SCROLLBAR_DEACTIVATE: usize = 1;
 
     pub fn new(direction: ScrollDirection, child: impl Into<BoxedWidget>) -> Self {
-        Scrollable {
+        Self {
             direction,
             child: child.into(),
         }
@@ -248,7 +248,7 @@ struct ScrollableState {
 
 impl ScrollableState {
     pub fn new() -> Self {
-        ScrollableState {
+        Self {
             size: None,
             content_size: None,
             location: Point::default(),

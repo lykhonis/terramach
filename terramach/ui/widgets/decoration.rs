@@ -40,7 +40,7 @@ impl BorderRadius {
         bottom_left: impl Into<Option<Point>>,
         bottom_right: impl Into<Option<Point>>,
     ) -> Self {
-        BorderRadius {
+        Self {
             top_left: top_left.into(),
             top_right: top_right.into(),
             bottom_left: bottom_left.into(),
@@ -50,7 +50,7 @@ impl BorderRadius {
 
     pub fn new_all(radius: impl Into<Option<f32>>) -> Self {
         let radius = radius.into().map(|r| Point::new(r, r));
-        BorderRadius {
+        Self {
             top_left: radius,
             top_right: radius,
             bottom_left: radius,
@@ -117,7 +117,7 @@ impl Decoration {
         background_color: impl Into<Option<Color>>,
         border_radius: impl Into<Option<BorderRadius>>,
     ) -> Self {
-        Decoration {
+        Self {
             background_color: background_color.into(),
             border_radius: border_radius.into(),
             child: None,
@@ -129,7 +129,7 @@ impl Decoration {
         border_radius: impl Into<Option<BorderRadius>>,
         child: impl Into<BoxedWidget>,
     ) -> Self {
-        Decoration {
+        Self {
             background_color: background_color.into(),
             border_radius: border_radius.into(),
             child: Some(child.into()),

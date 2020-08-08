@@ -37,7 +37,7 @@ struct Egl {
 
 impl Egl {
     pub fn new(display: egl::EGLDisplay, surface: egl::EGLSurface, context: egl::EGLContext) -> Self {
-        Egl {
+        Self {
             display,
             surface,
             context,

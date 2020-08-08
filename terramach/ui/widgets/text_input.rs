@@ -55,7 +55,7 @@ impl TextInput {
         hint: impl Into<Option<H>>,
         max_lines: impl Into<Option<usize>>,
     ) -> Self {
-        TextInput {
+        Self {
             text: text.into().map(|s| s.as_ref().to_string()).unwrap_or_default(),
             text_style: text_style.into(),
             text_align: text_align.into().unwrap_or(TextAlign::Start),
@@ -65,7 +65,7 @@ impl TextInput {
     }
 
     pub fn new_empty() -> Self {
-        TextInput {
+        Self {
             text: String::default(),
             text_style: None,
             text_align: TextAlign::Start,
@@ -406,7 +406,7 @@ struct TextSelection {
 
 impl TextSelection {
     pub fn new(text: impl AsRef<str>) -> Self {
-        TextSelection {
+        Self {
             text: text.as_ref().to_string(),
             begin: 0,
             end: 0,
@@ -694,7 +694,7 @@ impl TextState {
         hint_color: Color,
         selection_color: Color,
     ) -> Self {
-        TextState {
+        Self {
             font_collection,
             paragraph_style,
             text_style,

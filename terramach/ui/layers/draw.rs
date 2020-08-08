@@ -37,7 +37,7 @@ impl<'a> DrawContext<'a> {
         textures: &'a mut TextureRegistry,
         draw_children: &'a mut F,
     ) -> Self where F: FnMut(&mut Canvas, &mut TextureRegistry) {
-        DrawContext {
+        Self {
             size: size.into(),
             canvas,
             textures,

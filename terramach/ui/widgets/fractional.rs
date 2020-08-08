@@ -31,14 +31,14 @@ pub struct Fractional {
 
 impl Fractional {
     pub fn new_empty(fraction: impl Into<Size>) -> Self {
-        Fractional {
+        Self {
             fraction: fraction.into(),
             child: None,
         }
     }
 
     pub fn new(fraction: impl Into<Size>, child: impl Into<BoxedWidget>) -> Self {
-        Fractional {
+        Self {
             fraction: fraction.into(),
             child: Some(child.into()),
         }

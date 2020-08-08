@@ -44,7 +44,7 @@ pub struct Scheduler {
 impl Scheduler {
     pub fn new() -> Self {
         unsafe {
-            Scheduler {
+            Self {
                 handle: Handle::from_ptr(bindings::C_Scheduler_new()),
             }
         }

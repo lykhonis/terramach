@@ -33,7 +33,7 @@ impl AnimatedOpacity {
         duration: impl Into<Option<Duration>>,
         child: impl Into<BoxedWidget>,
     ) -> Self {
-        AnimatedOpacity {
+        Self {
             opacity: opacity.into().unwrap_or(1.0),
             duration: duration.into().unwrap_or(Duration::from_millis(350)),
             child: child.into(),
@@ -94,7 +94,7 @@ struct AnimatedOpacityState {
 
 impl AnimatedOpacityState {
     pub fn new(opacity: f32) -> Self {
-        AnimatedOpacityState {
+        Self {
             opacity,
             animation: None,
         }

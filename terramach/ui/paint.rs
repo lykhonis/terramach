@@ -31,7 +31,7 @@ pub struct PaintContext {
 
 impl PaintContext {
     pub fn new(size: impl Into<Size>) -> Self {
-        PaintContext {
+        Self {
             recorder: None,
             size: size.into(),
             painted_children: false,

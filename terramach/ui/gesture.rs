@@ -41,7 +41,7 @@ pub struct TapGesture {
 
 impl TapGesture {
     pub fn new(touches_count: usize, tap_count: usize) -> Self {
-        TapGesture {
+        Self {
             touches_count,
             tap_count,
             start_touches_count: 0,
@@ -82,13 +82,13 @@ impl TapGesture {
 
 impl Default for TapGesture {
     fn default() -> Self {
-        TapGesture::new(1, 1)
+        Self::new(1, 1)
     }
 }
 
 impl Clone for TapGesture {
     fn clone(&self) -> Self {
-        TapGesture::new(self.touches_count, self.tap_count)
+        Self::new(self.touches_count, self.tap_count)
     }
 }
 
@@ -109,7 +109,7 @@ pub struct PanGesture {
 
 impl PanGesture {
     pub fn new(minimum_touches: usize, maximum_touches: usize) -> Self {
-        PanGesture {
+        Self {
             minimum_touches,
             maximum_touches,
             start_location: None,
@@ -118,7 +118,7 @@ impl PanGesture {
     }
 
     pub fn limit(touches_count: usize) -> Self {
-        PanGesture::new(touches_count, touches_count)
+        Self::new(touches_count, touches_count)
     }
 
     pub fn is_active(&self) -> bool {
@@ -172,13 +172,13 @@ impl PanGesture {
 
 impl Default for PanGesture {
     fn default() -> Self {
-        PanGesture::new(1, 10)
+        Self::new(1, 10)
     }
 }
 
 impl Clone for PanGesture {
     fn clone(&self) -> Self {
-        PanGesture::new(self.minimum_touches, self.maximum_touches)
+        Self::new(self.minimum_touches, self.maximum_touches)
     }
 }
 
@@ -222,7 +222,7 @@ pub struct PinchGesture {
 
 impl PinchGesture {
     pub fn new() -> Self {
-        PinchGesture {
+        Self {
             state: PinchGestureState::Possible,
             start_distance: None,
             center_location: None,
@@ -304,12 +304,12 @@ impl PinchGesture {
 
 impl Default for PinchGesture {
     fn default() -> Self {
-        PinchGesture::new()
+        Self::new()
     }
 }
 
 impl Clone for PinchGesture {
     fn clone(&self) -> Self {
-        PinchGesture::new()
+        Self::new()
     }
 }

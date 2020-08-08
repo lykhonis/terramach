@@ -31,14 +31,14 @@ pub struct Constrained {
 
 impl Constrained {
     pub fn new_empty(constraints: impl Into<Constraints>) -> Self {
-        Constrained {
+        Self {
             constraints: constraints.into(),
             child: None,
         }
     }
 
     pub fn new(constraints: impl Into<Constraints>, child: impl Into<BoxedWidget>) -> Self {
-        Constrained {
+        Self {
             constraints: constraints.into(),
             child: Some(child.into()),
         }

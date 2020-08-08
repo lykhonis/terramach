@@ -54,7 +54,7 @@ impl RenderTree {
         let root_widget = tree.insert(root, None);
         let mut need_build = HashSet::new();
         need_build.insert(root_widget);
-        RenderTree {
+        Self {
             root_widget,
             tree,
             need_build,
@@ -493,7 +493,7 @@ pub struct WidgetTexture {
 
 impl WidgetTexture {
     fn new(pipeline: &SharedPipeline, texture: TextureId) -> Self {
-        WidgetTexture {
+        Self {
             pipeline: pipeline.clone(),
             texture,
         }
@@ -527,7 +527,7 @@ impl<'a> MountContext<'a> {
         texture_ids: &'a mut IndexPool,
         pipeline: &'a mut SharedPipeline,
     ) -> Self {
-        MountContext {
+        Self {
             id,
             texture_ids,
             tree,
@@ -570,7 +570,7 @@ pub struct UpdateContext<'a> {
 
 impl<'a> UpdateContext<'a> {
     pub fn new(id: Id, tree: &'a Tree<BoxedWidget>) -> Self {
-        UpdateContext { id, tree }
+        Self { id, tree }
     }
 
     pub fn ancestor_widget<T: 'static + Widget>(&self) -> Option<&T> {
@@ -599,7 +599,7 @@ pub struct BuildContext {
 
 impl BuildContext {
     pub fn new(event_emitter: WidgetEventEmitter) -> Self {
-        BuildContext {
+        Self {
             children: Vec::new(),
             event_emitter,
         }

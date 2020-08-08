@@ -39,7 +39,7 @@ impl Padding {
         right: impl Into<Option<f32>>,
         bottom: impl Into<Option<f32>>,
     ) -> Self {
-        Padding {
+        Self {
             left: left.into().unwrap_or_default(),
             top: top.into().unwrap_or_default(),
             right: right.into().unwrap_or_default(),
@@ -55,7 +55,7 @@ impl Padding {
         bottom: impl Into<Option<f32>>,
         child: impl Into<BoxedWidget>,
     ) -> Self {
-        Padding {
+        Self {
             left: left.into().unwrap_or_default(),
             top: top.into().unwrap_or_default(),
             right: right.into().unwrap_or_default(),
@@ -66,17 +66,17 @@ impl Padding {
 
     pub fn new_all(padding: impl Into<Option<f32>>, child: impl Into<BoxedWidget>) -> Self {
         let padding = padding.into();
-        Padding::new(padding, padding, padding, padding, child)
+        Self::new(padding, padding, padding, padding, child)
     }
 
     pub fn new_horizontal(padding: impl Into<Option<f32>>, child: impl Into<BoxedWidget>) -> Self {
         let padding = padding.into();
-        Padding::new(padding, None, padding, None, child)
+        Self::new(padding, None, padding, None, child)
     }
 
     pub fn new_vertical(padding: impl Into<Option<f32>>, child: impl Into<BoxedWidget>) -> Self {
         let padding = padding.into();
-        Padding::new(None, padding, None, padding, child)
+        Self::new(None, padding, None, padding, child)
     }
 }
 

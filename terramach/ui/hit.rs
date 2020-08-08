@@ -33,7 +33,7 @@ impl EventResponder {
         transformation: impl Into<Option<Matrix>>,
         cursor: impl Into<Option<Cursor>>,
     ) -> Self {
-        EventResponder {
+        Self {
             widget,
             transformation: transformation.into(),
             cursor: cursor.into(),
@@ -90,7 +90,7 @@ pub struct HitTestContext {
 
 impl HitTestContext {
     pub fn new(size: impl Into<Size>, location: impl Into<Point>) -> Self {
-        HitTestContext {
+        Self {
             size: size.into(),
             location: location.into(),
             transformation: Matrix::default(),

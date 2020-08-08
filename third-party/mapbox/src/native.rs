@@ -30,14 +30,14 @@ impl<T: NativeDrop> Handle<T> {
     }
 
     pub unsafe fn new_native(f: unsafe extern "C" fn(*mut T)) -> Self {
-        Handle::new(|this| f(this))
+        Self::new(|this| f(this))
     }
 
     pub fn new<F>(f: F) -> Self where F: FnOnce(*mut T) {
         let mut instance = std::mem::MaybeUninit::uninit();
         f(instance.as_mut_ptr());
         unsafe {
-            Handle::from_ptr(Box::into_raw(Box::new(instance.assume_init())))
+            Self::from_ptr(Box::into_raw(Box::new(instance.assume_init())))
         }
     }
 }
@@ -74,7 +74,7 @@ pub trait NativeCopy<T> {
 
 impl<T> Clone for Handle<T> where T: NativeDrop + NativeCopy<T> {
     fn clone(&self) -> Self {
-        Handle::new(|this| self.native().copy_to(this))
+        Self::new(|this| self.native().copy_to(this))
     }
 }
 

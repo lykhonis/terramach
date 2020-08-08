@@ -26,7 +26,7 @@ pub struct TextureLayer {
 
 impl TextureLayer {
     pub fn new(texture_id: impl Into<TextureId>) -> Self {
-        TextureLayer {
+        Self {
             texture_id: texture_id.into(),
         }
     }

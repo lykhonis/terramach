@@ -34,11 +34,11 @@ const DISTANT_FUTURE_SECS: f64 = 1.0e10;
 pub struct RunLoopHandle(usize);
 
 impl Add<usize> for RunLoopHandle {
-    type Output = RunLoopHandle;
+    type Output = Self;
 
     fn add(self, rhs: usize) -> Self::Output {
         let (id, _) = self.0.overflowing_add(rhs);
-        RunLoopHandle(id)
+        Self(id)
     }
 }
 
@@ -83,7 +83,7 @@ impl RunLoopObserver {
                 run_loop_observer_callback,
                 &mut context,
             );
-            RunLoopObserver {
+            Self {
                 inner: observer,
                 callback,
             }
@@ -122,7 +122,7 @@ impl RunLoopSource {
                 perform: run_loop_source_callback,
             };
             let source = CFRunLoopSourceCreate(kCFAllocatorDefault, 0, &mut context);
-            RunLoopSource { inner: source }
+            Self { inner: source }
         }
     }
 
@@ -159,7 +159,7 @@ impl RunLoopTimer {
                 run_loop_timer_callback,
                 null_mut(),
             );
-            RunLoopTimer { inner: timer }
+            Self { inner: timer }
         }
     }
 
@@ -183,7 +183,7 @@ impl Clone for RunLoopTimer {
     fn clone(&self) -> Self {
         unsafe {
             CFRetain(self.inner as *const c_void);
-            RunLoopTimer { inner: self.inner }
+            Self { inner: self.inner }
         }
     }
 }
@@ -198,7 +198,7 @@ impl SharedRunLoop {
     fn new(run_loop: &RunLoop) -> Self {
         unsafe {
             CFRetain(run_loop.inner as *const c_void);
-            SharedRunLoop {
+            Self {
                 running: run_loop.running.clone(),
                 run_loop: run_loop.inner,
                 timer: run_loop.timer.clone(),
@@ -229,7 +229,7 @@ impl Clone for SharedRunLoop {
         unsafe {
             CFRetain(self.run_loop as *const c_void);
         }
-        SharedRunLoop {
+        Self {
             running: self.running.clone(),
             run_loop: self.run_loop,
             timer: self.timer.clone(),
@@ -257,11 +257,11 @@ pub struct RunLoop {
 
 impl RunLoop {
     pub fn main() -> Self {
-        unsafe { RunLoop::from_run_loop(CFRunLoopGetMain()) }
+        unsafe { Self::from_run_loop(CFRunLoopGetMain()) }
     }
 
     pub fn new() -> Self {
-        unsafe { RunLoop::from_run_loop(CFRunLoopGetCurrent()) }
+        unsafe { Self::from_run_loop(CFRunLoopGetCurrent()) }
     }
 
     fn from_run_loop(run_loop: CFRunLoopRef) -> Self {
@@ -269,7 +269,7 @@ impl RunLoop {
             CFRetain(run_loop as *const c_void);
             let timer = RunLoopTimer::new();
             CFRunLoopAddTimer(run_loop, timer.inner, kCFRunLoopCommonModes);
-            RunLoop {
+            Self {
                 inner: run_loop,
                 running: Rc::new(AtomicBool::new(false)),
                 last_handle: RunLoopHandle::default(),

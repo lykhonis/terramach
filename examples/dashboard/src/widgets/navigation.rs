@@ -31,7 +31,7 @@ pub struct Navigation {}
 
 impl Navigation {
     pub fn new() -> Self {
-        Navigation {}
+        Self {}
     }
 }
 
@@ -68,7 +68,7 @@ struct NavigationState {
 
 impl NavigationState {
     pub fn new() -> Self {
-        NavigationState {
+        Self {
             map: MapController::new(),
         }
     }

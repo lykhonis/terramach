@@ -27,7 +27,7 @@ pub struct ContainerLayer {
 
 impl ContainerLayer {
     pub fn new() -> Self {
-        ContainerLayer { layers: Vec::new() }
+        Self { layers: Vec::new() }
     }
 
     pub fn is_empty(&self) -> bool {

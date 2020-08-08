@@ -45,7 +45,7 @@ impl ClipboardContent {
 
 impl From<String> for ClipboardContent {
     fn from(data: String) -> Self {
-        ClipboardContent {
+        Self {
             data: NSData::with_bytes(data.as_bytes()),
             kind: NSStringPboardType.to_string(),
         }
@@ -54,13 +54,13 @@ impl From<String> for ClipboardContent {
 
 impl From<&str> for ClipboardContent {
     fn from(data: &str) -> Self {
-        ClipboardContent::from(data.to_string())
+        Self::from(data.to_string())
     }
 }
 
 impl From<&String> for ClipboardContent {
     fn from(data: &String) -> Self {
-        ClipboardContent::from(data.clone())
+        Self::from(data.clone())
     }
 }
 
@@ -71,7 +71,7 @@ pub struct Clipboard {
 impl Clipboard {
     fn new() -> Self {
         unsafe {
-            Clipboard {
+            Self {
                 pasteboard: Id::from_ptr(msg_send![class!(NSPasteboard), generalPasteboard]),
             }
         }
@@ -121,6 +121,6 @@ impl Clipboard {
 
 impl Default for Clipboard {
     fn default() -> Self {
-        Clipboard::new()
+        Self::new()
     }
 }

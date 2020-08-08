@@ -34,7 +34,7 @@ pub struct Sidebar {}
 
 impl Sidebar {
     pub fn new() -> Self {
-        Sidebar {}
+        Self {}
     }
 
     fn build_button(
@@ -151,7 +151,7 @@ struct SidebarState {
 
 impl SidebarState {
     pub fn new() -> Self {
-        SidebarState {
+        Self {
             selected_button: Button::Earth,
         }
     }

@@ -102,7 +102,7 @@ impl Context {
 
 impl Clone for Context {
     fn clone(&self) -> Self {
-        Context {
+        Self {
             inner: self.inner.clone(),
             guard: None,
         }

@@ -27,7 +27,7 @@ pub struct TextureContext {}
 
 impl TextureContext {
     pub fn new() -> Self {
-        TextureContext {}
+        Self {}
     }
 }
 
@@ -38,7 +38,7 @@ pub struct TextureRegistry {
 
 impl TextureRegistry {
     pub fn new() -> Self {
-        TextureRegistry {
+        Self {
             textures: HashMap::new(),
         }
     }

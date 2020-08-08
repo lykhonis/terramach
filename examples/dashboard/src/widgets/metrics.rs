@@ -38,7 +38,7 @@ impl Metric {
         color: impl Into<Color>,
         value: f32,
     ) -> Self {
-        Metric {
+        Self {
             level,
             suffix: suffix.as_ref().to_string(),
             description: description.as_ref().to_string(),
@@ -124,7 +124,7 @@ struct MetricState {
 
 impl MetricState {
     pub fn new(level: i32, value: f32) -> Self {
-        MetricState {
+        Self {
             animation: None,
             level: Tween::new(0, level),
             value: Tween::new(0.0, value),
@@ -149,7 +149,7 @@ pub struct Metrics {}
 
 impl Metrics {
     pub fn new() -> Self {
-        Metrics {}
+        Self {}
     }
 }
 

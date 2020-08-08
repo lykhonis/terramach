@@ -34,7 +34,7 @@ impl<'a> RenderContext<'a> {
         gl: &'a mut gl::Gl,
         size: ISize,
     ) -> Self {
-        RenderContext {
+        Self {
             gl,
             size,
         }
@@ -67,7 +67,7 @@ impl<'a> PrerollContext<'a> {
         texture: TextureId,
         size: ISize,
     ) -> Self {
-        PrerollContext {
+        Self {
             pixel_ratio,
             pipeline,
             gl,
@@ -150,7 +150,7 @@ impl Texture {
             gl::BindFramebuffer(gl::FRAMEBUFFER, frame_buffer);
             gl::FramebufferTexture2D(gl::FRAMEBUFFER, gl::COLOR_ATTACHMENT0, gl::TEXTURE_2D, texture, 0);
         }
-        Texture {
+        Self {
             gl,
             gl_context,
             frame_buffer,

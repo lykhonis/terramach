@@ -38,7 +38,7 @@ pub struct MapOptions {
 impl MapOptions {
     pub fn new() -> Self {
         unsafe {
-            MapOptions {
+            Self {
                 handle: Handle::new_native(bindings::mbgl_MapOptions_MapOptions)
             }
         }
@@ -61,7 +61,7 @@ impl MapOptions {
 
 impl Default for MapOptions {
     fn default() -> Self {
-        MapOptions::new()
+        Self::new()
     }
 }
 
@@ -94,7 +94,7 @@ impl Map {
         resource_options: &ResourceOptions,
     ) -> Self {
         unsafe {
-            Map {
+            Self {
                 handle: Handle::from_ptr(bindings::C_Map_new(
                     Scheduler::new().into_handle().into_ptr(),
                     frontend.into_handle().into_ptr(),

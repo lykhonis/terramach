@@ -64,7 +64,7 @@ impl<T> Animation<T> {
             D: 'static + Driver,
             A: 'static + Animated<T>,
     {
-        Animation {
+        Self {
             driver: Box::new(driver),
             animated: Box::new(animated),
             interpolation: None,
@@ -115,7 +115,7 @@ pub struct DurationDriver {
 
 impl DurationDriver {
     pub fn new(duration: Duration) -> Self {
-        DurationDriver {
+        Self {
             timestamp: None,
             value: 0.0,
             duration,
@@ -167,7 +167,7 @@ pub struct Tween<T: Animated<T>> {
 
 impl<T: Animated<T>> Tween<T> {
     pub fn new(begin: impl Into<T>, end: impl Into<T>) -> Self {
-        Tween {
+        Self {
             begin: begin.into(),
             end: end.into(),
         }
@@ -188,7 +188,7 @@ impl<T: Animated<T>> Animated<T> for Tween<T> {
 
 impl<T: Animated<T>> From<(T, T)> for Tween<T> {
     fn from(values: (T, T)) -> Self {
-        Tween::new(values.0, values.1)
+        Self::new(values.0, values.1)
     }
 }
 

@@ -27,7 +27,7 @@ pub struct OffsetLayer {
 
 impl OffsetLayer {
     pub fn new(offset: impl Into<Point>) -> Self {
-        OffsetLayer {
+        Self {
             offset: offset.into(),
         }
     }

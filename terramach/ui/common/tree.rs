@@ -31,7 +31,7 @@ struct Node<T> {
 
 impl<T> Node<T> {
     pub fn new(id: Id, data: impl Into<Option<T>>) -> Self {
-        Node {
+        Self {
             id,
             inner: data.into(),
         }
@@ -75,7 +75,7 @@ impl<T> Tree<T> {
         let root = indices.take();
         let mut nodes = HashMap::new();
         nodes.insert(root, Node::new(root, None));
-        Tree {
+        Self {
             ids: indices,
             root,
             nodes,

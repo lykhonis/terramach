@@ -27,7 +27,7 @@ pub struct ClipRectLayer {
 
 impl ClipRectLayer {
     pub fn new(clip_rect: impl Into<Rect>) -> Self {
-        ClipRectLayer {
+        Self {
             clip_rect: clip_rect.into(),
         }
     }

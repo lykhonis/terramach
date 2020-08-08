@@ -48,7 +48,7 @@ impl Pipeline {
             receiver,
         );
         std::thread::spawn(move || render_pipeline.render());
-        Pipeline { sender }
+        Self { sender }
     }
 
     pub fn resize(&mut self, display_size: impl Into<Size>) {
@@ -73,7 +73,7 @@ pub struct SharedPipeline {
 
 impl SharedPipeline {
     fn new(sender: &Sender<Command>) -> Self {
-        SharedPipeline {
+        Self {
             sender: sender.clone(),
         }
     }
@@ -113,7 +113,7 @@ impl RenderPipeline {
         sender: Sender<Command>,
         receiver: Receiver<Command>,
     ) -> Self {
-        RenderPipeline {
+        Self {
             vsync,
             display,
             sender,

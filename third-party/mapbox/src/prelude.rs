@@ -28,7 +28,7 @@ pub type Size = bindings::mbgl_Size;
 
 impl Size {
     pub fn new(width: u32, height: u32) -> Self {
-        Size {
+        Self {
             width,
             height,
         }
@@ -37,7 +37,7 @@ impl Size {
 
 impl From<(u32, u32)> for Size {
     fn from(size: (u32, u32)) -> Self {
-        Size::new(size.0, size.1)
+        Self::new(size.0, size.1)
     }
 }
 
@@ -56,7 +56,7 @@ pub struct ResourceOptions {
 impl ResourceOptions {
     pub fn new() -> Self {
         unsafe {
-            ResourceOptions {
+            Self {
                 handle: Handle::new_native(bindings::mbgl_ResourceOptions_ResourceOptions),
             }
         }
@@ -82,7 +82,7 @@ impl ResourceOptions {
 
 impl Default for ResourceOptions {
     fn default() -> Self {
-        ResourceOptions::new()
+        Self::new()
     }
 }
 
@@ -101,7 +101,7 @@ pub struct LatLng(bindings::mbgl_LatLng);
 
 impl LatLng {
     pub fn new(latitude: f64, longitude: f64) -> Self {
-        LatLng(bindings::mbgl_LatLng {
+        Self(bindings::mbgl_LatLng {
             lat: latitude,
             lon: longitude,
         })
@@ -114,13 +114,13 @@ impl LatLng {
 
 impl Default for LatLng {
     fn default() -> Self {
-        LatLng::new(0.0, 0.0)
+        Self::new(0.0, 0.0)
     }
 }
 
 impl From<(f64, f64)> for LatLng {
     fn from(values: (f64, f64)) -> Self {
-        LatLng::new(values.0, values.1)
+        Self::new(values.0, values.1)
     }
 }
 
@@ -165,7 +165,7 @@ pub struct CameraOptions {
 impl CameraOptions {
     pub fn new() -> Self {
         unsafe {
-            CameraOptions {
+            Self {
                 handle: Handle::from_ptr(bindings::C_CameraOptions_new()),
             }
         }
@@ -204,7 +204,7 @@ impl NativeAccess<bindings::mbgl_CameraOptions> for CameraOptions {
 
 impl Default for CameraOptions {
     fn default() -> Self {
-        CameraOptions::new()
+        Self::new()
     }
 }
 
@@ -252,14 +252,14 @@ impl NativeAccess<bindings::mbgl_AnimationOptions> for AnimationOptions {
 
 impl Default for AnimationOptions {
     fn default() -> Self {
-        AnimationOptions::new()
+        Self::new()
     }
 }
 
 impl AnimationOptions {
     pub fn new() -> Self {
         unsafe {
-            AnimationOptions {
+            Self {
                 handle: Handle::from_ptr(bindings::C_AnimationOptions_new()),
             }
         }
@@ -281,7 +281,7 @@ pub struct ScreenCoordinate(bindings::mbgl_ScreenCoordinate);
 
 impl ScreenCoordinate {
     pub fn new(x: f32, y: f32) -> Self {
-        ScreenCoordinate(bindings::mbgl_ScreenCoordinate {
+        Self(bindings::mbgl_ScreenCoordinate {
             x: x as f64,
             y: y as f64,
             _phantom_0: PhantomData,
@@ -295,13 +295,13 @@ impl ScreenCoordinate {
 
 impl Default for ScreenCoordinate {
     fn default() -> Self {
-        ScreenCoordinate::new(0.0, 0.0)
+        Self::new(0.0, 0.0)
     }
 }
 
 impl From<(f32, f32)> for ScreenCoordinate {
     fn from(values: (f32, f32)) -> Self {
-        ScreenCoordinate::new(values.0, values.1)
+        Self::new(values.0, values.1)
     }
 }
 
