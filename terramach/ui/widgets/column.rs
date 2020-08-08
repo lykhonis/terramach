@@ -32,7 +32,7 @@ pub(crate) struct Flex {
 
 impl Flex {
     pub fn new(widget: impl Into<BoxedWidget>, weight: impl Into<Option<usize>>) -> Self {
-        Flex {
+        Self {
             widget: widget.into(),
             weight: weight.into(),
         }
@@ -56,7 +56,7 @@ pub struct Column {
 
 impl Default for Column {
     fn default() -> Self {
-        Column::new(CrossAxisAlignment::Middle, None)
+        Self::new(CrossAxisAlignment::Middle, None)
     }
 }
 
@@ -65,7 +65,7 @@ impl Column {
         horizontal_alignment: impl Into<Option<CrossAxisAlignment>>,
         vertical_alignment: impl Into<Option<MainAxisAlignment>>,
     ) -> Self {
-        Column {
+        Self {
             children: Vec::new(),
             horizontal_alignment: horizontal_alignment.into(),
             vertical_alignment: vertical_alignment.into(),

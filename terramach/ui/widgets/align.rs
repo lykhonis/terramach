@@ -34,7 +34,7 @@ pub enum MainAxisAlignment {
 
 impl Default for MainAxisAlignment {
     fn default() -> Self {
-        MainAxisAlignment::Start
+        Self::Start
     }
 }
 
@@ -48,7 +48,7 @@ pub enum CrossAxisAlignment {
 
 impl Default for CrossAxisAlignment {
     fn default() -> Self {
-        CrossAxisAlignment::Start
+        Self::Start
     }
 }
 
@@ -60,46 +60,46 @@ pub struct Alignment {
 
 impl Alignment {
     pub fn new(horizontal: impl Into<Option<f32>>, vertical: impl Into<Option<f32>>) -> Self {
-        Alignment {
+        Self {
             horizontal: horizontal.into().unwrap_or_default(),
             vertical: vertical.into().unwrap_or_default(),
         }
     }
 
     pub fn top_left() -> Self {
-        Alignment::new(-1.0, -1.0)
+        Self::new(-1.0, -1.0)
     }
 
     pub fn top_right() -> Self {
-        Alignment::new(1.0, -1.0)
+        Self::new(1.0, -1.0)
     }
 
     pub fn bottom_left() -> Self {
-        Alignment::new(1.0, -1.0)
+        Self::new(1.0, -1.0)
     }
 
     pub fn bottom_right() -> Self {
-        Alignment::new(1.0, 1.0)
+        Self::new(1.0, 1.0)
     }
 
     pub fn center() -> Self {
-        Alignment::new(None, None)
+        Self::new(None, None)
     }
 
     pub fn top_center() -> Self {
-        Alignment::new(None, -1.0)
+        Self::new(None, -1.0)
     }
 
     pub fn bottom_center() -> Self {
-        Alignment::new(None, 1.0)
+        Self::new(None, 1.0)
     }
 
     pub fn left_center() -> Self {
-        Alignment::new(-1.0, None)
+        Self::new(-1.0, None)
     }
 
     pub fn right_center() -> Self {
-        Alignment::new(1.0, None)
+        Self::new(1.0, None)
     }
 
     pub fn horizontal(&self) -> f32 {
@@ -129,13 +129,13 @@ impl Hash for Alignment {
 
 impl Default for Alignment {
     fn default() -> Self {
-        Alignment::center()
+        Self::center()
     }
 }
 
 impl From<(f32, f32)> for Alignment {
     fn from(values: (f32, f32)) -> Self {
-        Alignment::new(values.0, values.1)
+        Self::new(values.0, values.1)
     }
 }
 
@@ -147,7 +147,7 @@ pub struct Align {
 
 impl Align {
     pub fn new(alignment: impl Into<Option<Alignment>>, child: impl Into<BoxedWidget>) -> Self {
-        Align {
+        Self {
             alignment: alignment.into().unwrap_or_default(),
             child: child.into(),
         }

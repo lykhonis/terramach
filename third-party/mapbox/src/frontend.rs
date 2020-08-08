@@ -50,7 +50,7 @@ impl RendererFrontend {
                 pixel_ratio,
                 invalidate: Box::new(invalidate),
             }));
-            RendererFrontend {
+            Self {
                 pixel_ratio,
                 handle: Handle::from_ptr(bindings::C_RendererFrontend_new(
                     backend.into_handle().into_ptr(),

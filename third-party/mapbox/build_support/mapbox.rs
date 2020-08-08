@@ -37,7 +37,7 @@ impl BuildConfiguration {
         source_dir: impl AsRef<Path>,
         build_dir: impl AsRef<Path>,
     ) -> Self {
-        BuildConfiguration {
+        Self {
             source_dir: source_dir.as_ref().to_path_buf(),
             build_dir: build_dir.as_ref().to_path_buf(),
         }

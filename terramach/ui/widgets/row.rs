@@ -33,7 +33,7 @@ pub struct Row {
 
 impl Default for Row {
     fn default() -> Self {
-        Row::new(None, CrossAxisAlignment::Middle)
+        Self::new(None, CrossAxisAlignment::Middle)
     }
 }
 
@@ -42,7 +42,7 @@ impl Row {
         horizontal_alignment: impl Into<Option<MainAxisAlignment>>,
         vertical_alignment: impl Into<Option<CrossAxisAlignment>>,
     ) -> Self {
-        Row {
+        Self {
             children: Vec::new(),
             horizontal_alignment: horizontal_alignment.into(),
             vertical_alignment: vertical_alignment.into(),

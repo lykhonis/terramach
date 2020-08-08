@@ -264,7 +264,7 @@ impl Text {
         text: impl Into<Option<T>>,
         text_style: impl Into<Option<TextStyle>>,
     ) -> Self {
-        Text {
+        Self {
             text: text.into().map(|s| s.as_ref().to_string()).unwrap_or_default(),
             text_style: text_style.into(),
         }

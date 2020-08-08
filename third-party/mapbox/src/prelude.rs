@@ -28,7 +28,7 @@ pub type Size = bindings::mbgl_Size;
 
 impl Size {
     pub fn new(width: u32, height: u32) -> Self {
-        Size {
+        Self {
             width,
             height,
         }
@@ -114,13 +114,13 @@ impl LatLng {
 
 impl Default for LatLng {
     fn default() -> Self {
-        LatLng::new(0.0, 0.0)
+        Self::new(0.0, 0.0)
     }
 }
 
 impl From<(f64, f64)> for LatLng {
     fn from(values: (f64, f64)) -> Self {
-        LatLng::new(values.0, values.1)
+        Self::new(values.0, values.1)
     }
 }
 
@@ -165,7 +165,7 @@ pub struct CameraOptions {
 impl CameraOptions {
     pub fn new() -> Self {
         unsafe {
-            CameraOptions {
+            Self {
                 handle: Handle::from_ptr(bindings::C_CameraOptions_new()),
             }
         }
@@ -281,7 +281,7 @@ pub struct ScreenCoordinate(bindings::mbgl_ScreenCoordinate);
 
 impl ScreenCoordinate {
     pub fn new(x: f32, y: f32) -> Self {
-        ScreenCoordinate(bindings::mbgl_ScreenCoordinate {
+        Self(bindings::mbgl_ScreenCoordinate {
             x: x as f64,
             y: y as f64,
             _phantom_0: PhantomData,
@@ -295,13 +295,13 @@ impl ScreenCoordinate {
 
 impl Default for ScreenCoordinate {
     fn default() -> Self {
-        ScreenCoordinate::new(0.0, 0.0)
+        Self::new(0.0, 0.0)
     }
 }
 
 impl From<(f32, f32)> for ScreenCoordinate {
     fn from(values: (f32, f32)) -> Self {
-        ScreenCoordinate::new(values.0, values.1)
+        Self::new(values.0, values.1)
     }
 }
 

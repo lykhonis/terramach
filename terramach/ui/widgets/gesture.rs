@@ -39,7 +39,7 @@ impl Gesture {
         pan: impl Into<Option<PanGesture>>,
         child: impl Into<BoxedWidget>,
     ) -> Self {
-        Gesture {
+        Self {
             event_id: event_id.into(),
             event_emitter,
             tap: tap.into(),
@@ -112,7 +112,7 @@ impl GestureState {
         tap: Option<TapGesture>,
         pan: Option<PanGesture>,
     ) -> Self {
-        GestureState {
+        Self {
             event_id,
             event_emitter,
             tap,

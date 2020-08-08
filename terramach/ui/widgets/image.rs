@@ -54,7 +54,7 @@ impl Image {
         bitmap.notify_pixels_changed();
 
         let image = GrImage::from_bitmap(&bitmap).unwrap();
-        Image {
+        Self {
             alignment: alignment.into().unwrap_or_default(),
             fit: fit.into().unwrap_or_default(),
             color: color.into(),

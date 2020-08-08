@@ -31,14 +31,14 @@ pub struct AspectRatio {
 
 impl AspectRatio {
     pub fn new(ratio: impl Into<f32>, child: impl Into<BoxedWidget>) -> Self {
-        AspectRatio {
+        Self {
             ratio: ratio.into(),
             child: Some(child.into()),
         }
     }
 
     pub fn new_empty(ratio: impl Into<f32>) -> Self {
-        AspectRatio {
+        Self {
             ratio: ratio.into(),
             child: None,
         }
